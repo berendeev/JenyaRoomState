@@ -1,12 +1,29 @@
 package model;
 
 public class Teacher {
+	int id;
 	private String firstName;
 	private String lastName;
 
-	public Teacher(String firstName, String lastName) {
+	public Teacher() {
+	}
+
+	public Teacher(int id, String firstName, String lastName) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public Teacher(String firstName, String lastName) {
+		this(0, firstName, lastName);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {

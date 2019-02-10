@@ -1,25 +1,15 @@
 package controller;
 
-import com.google.gson.Gson;
-import model.Lesson;
-import model.Room;
-import model.Teacher;
+import daoimpl.DaoImpl;
 import org.apache.commons.lang3.StringUtils;
 import view.AddElementView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 
 public class AddElementController {
-	List<Room> rooms;
-	//--
 	private JFrame frame;
 	private JButton submit;
 
@@ -33,9 +23,7 @@ public class AddElementController {
 	private TextField teacherFirstName;
 	private TextField teacherLastName;
 
-	public AddElementController(final List<Room> rooms) {
-		this.rooms = rooms;
-
+	public AddElementController() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,20 +60,10 @@ public class AddElementController {
 						|| StringUtils.isEmpty(teacherLastName.getText())) {
 					return;
 				}
-				Room room = getRoomByNumber(roomNumber.getText());
-				if (room == null) {
-					room = new Room(roomNumber.getText());
-					rooms.add(room);
-				}
-
-				Lesson lesson = getLesson(room, lessonName.getText(), lessonStartDate, lessonStartDate,
+				//---
+				DaoImpl dao = new DaoImpl();
+				dao.save(roomNumber.getText(), lessonName.getText(), lessonStartDate, lessonEndDate,
 						teacherFirstName.getText(), teacherLastName.getText());
-				if (lesson == null) {
-					room.getLessons().add(new Lesson(lessonName.getText(), lessonStartDate, lessonStartDate,
-							new Teacher(teacherFirstName.getText(), teacherLastName.getText())));
-				}
-
-				save();
 				//---
 				frame.dispose();
 				new MenuController();
@@ -95,40 +73,5 @@ public class AddElementController {
 		AddElementView addElementView = new AddElementView(frame, submit, roomNumber, lessonName, lessonStart, lessonEnd,
 				teacherFirstName, teacherLastName);
 		addElementView.draw();
-	}
-
-	private Lesson getLesson(Room room, String name, Date start, Date end, String teacherFirstName, String teacherLastName) {
-		for (Lesson current : room.getLessons()) {
-			if (current.getName().equals(name)
-					&& current.getDateStart().equals(start)
-					&& current.getDateEnd().equals(end)
-					&& current.getTeacher().getFirstName().equals(teacherFirstName)
-					&& current.getTeacher().getLastName().equals(teacherLastName)) {
-				return current;
-			}
-		}
-		return null;
-	}
-
-	private Room getRoomByNumber(String number) {
-		for (Room current : rooms) {
-			if (current.getNumber().equals(number)) {
-				return current;
-			}
-		}
-		return null;
-	}
-
-	private void save() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("Data").getFile());
-
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-			String jsonData = new Gson().toJson(rooms);
-			writer.write(jsonData);
-			writer.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
