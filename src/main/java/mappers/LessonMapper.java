@@ -2,11 +2,15 @@ package mappers;
 
 import model.Lesson;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
+import java.util.List;
 
 public interface LessonMapper {
 
@@ -19,4 +23,12 @@ public interface LessonMapper {
 			"VALUES(#{lesson.name}, #{lesson.dateStart}, #{lesson.dateEnd}, #{roomId}, #{teacherId})")
 	@Options(useGeneratedKeys = true, keyColumn = "lesson.id")
 	void insertLesson(@Param("lesson") Lesson lesson, @Param("roomId") int roomId, @Param("teacherId") int teacherId);
+
+	@Select("SELECT * FROM lesson WHERE room_id = #{id}")
+	@Results({
+			@Result(column = "id", property = "id"),
+			@Result(column = "date_start", property = "dateStart"),
+			@Result(column = "date_end", property = "dateEnd")
+	})
+    List<Lesson> getLessonByRoomId(int id);
 }

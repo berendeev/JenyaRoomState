@@ -1,20 +1,15 @@
 package controller;
 
-import model.Room;
 import view.MenuView;
 
 import javax.swing.*;
-import java.util.List;
 
 public class MenuController {
 	private JFrame frame;
 	private JButton addNew;
-	private JButton findByRoom;
-
-	private List<Room> rooms;
+	private JButton find;
 
 	public MenuController() {
-
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -24,13 +19,13 @@ public class MenuController {
 			new AddElementController();
 		});
 
-		findByRoom = new JButton("find by room");
-		findByRoom.addActionListener(e -> {
+		find = new JButton("find");
+		find.addActionListener(e -> {
 			frame.dispose();
-			new FindByRoomController();
+			new FindController();
 		});
 
-		MenuView menuView = new MenuView(frame, addNew, findByRoom);
+		MenuView menuView = new MenuView(frame, addNew, find);
 		menuView.draw();
 	}
 }

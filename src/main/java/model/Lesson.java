@@ -9,6 +9,9 @@ public class Lesson {
 	private Date dateEnd;
 	private Teacher teacher;
 
+	public Lesson() {
+	}
+
 	public Lesson(String name, Date dateStart, Date dateEnd, Teacher teacher) {
 		this.id = 0;
 		this.name = name;

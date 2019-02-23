@@ -1,7 +1,7 @@
 package model;
 
 public class Teacher {
-	int id;
+	private int id;
 	private String firstName;
 	private String lastName;
 

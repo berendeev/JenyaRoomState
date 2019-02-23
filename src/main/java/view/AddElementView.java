@@ -75,7 +75,7 @@ public class AddElementView {
 		panel.add(submit);
 
 		frame.add(panel);
-//		frame.pack();
+		frame.pack();
 		frame.setVisible(true);
 	}
 }
