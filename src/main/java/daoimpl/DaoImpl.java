@@ -58,9 +58,14 @@ public class DaoImpl {
         }
     }
 
-    public Room getRoomByNumber(String roomNumber) {
+     public Room getRoomByNumber(String roomNumber) {
         try (SqlSession sqlSession = getSession()) {
-            return sqlSession.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);
+            Room room = sqlSession.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);
+
+            List<Lesson> lessons = sqlSession.getMapper(LessonMapper.class).getLessonByRoomId(room.getId());
+            room.setLessons(lessons);
+
+            return room;
         } catch (RuntimeException exc) {
             exc.printStackTrace();
             throw exc;
