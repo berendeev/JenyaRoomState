@@ -13,9 +13,10 @@ import utils.MyBatisUtils;
 import java.util.Date;
 import java.util.List;
 
+//класс работы с бд
 public class DaoImpl {
-    private static DaoImpl ourInstance = new DaoImpl();
-    private SqlSessionFactory sqlSessionFactory;
+    private static DaoImpl ourInstance = new DaoImpl(); //это для синглтона
+    private SqlSessionFactory sqlSessionFactory; // сессия для транзакций
 
     private DaoImpl() {
         sqlSessionFactory = MyBatisUtils.getSqlSessionFactory();
