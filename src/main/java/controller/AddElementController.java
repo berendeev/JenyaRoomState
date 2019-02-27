@@ -24,6 +24,7 @@ public class AddElementController {
     private TextField teacherLastName;
 
     public AddElementController() {
+        // создание элементов отображения(кнопки, поля для ввода и тд) и их настройка
         frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,30 +44,31 @@ public class AddElementController {
         teacherFirstName = new TextField();
         teacherLastName = new TextField();
 
+        // кнопка, по нажатии которой будет выполнятся следующий код (а по идее вытаскивается все что ты написал в поля для ввода, проверяется на корректность и, если все нормально, то передает дальше)
         submit = new JButton("submit");
         submit.addActionListener(e -> {
-            Date lessonStartDate = (Date) lessonStart.getModel().getValue();
+            Date lessonStartDate = (Date) lessonStart.getModel().getValue();    // вытаскивается дата
             Date lessonEndDate = (Date) lessonEnd.getModel().getValue();
-            if (lessonStartDate == null || lessonEndDate == null || lessonStartDate.after(lessonEndDate)) {
-                JFrame error = new JFrame("Error");
+            if (lessonStartDate == null || lessonEndDate == null || lessonStartDate.after(lessonEndDate)) { // проверка даты - начало пары не должно быть позже чем ее конец
+                JFrame error = new JFrame("Error"); // если косяк - то ерор
                 error.add(new JLabel("Date not valid"));
                 error.pack();
                 error.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 error.setVisible(true);
             } else {
-                if (StringUtils.isEmpty(roomNumber.getText())
+                if (StringUtils.isEmpty(roomNumber.getText()) // если с датой все норм - проверяем остальные поля
                         || StringUtils.isEmpty(lessonName.getText())
                         || StringUtils.isEmpty(teacherFirstName.getText())
                         || StringUtils.isEmpty(teacherLastName.getText())) {
                     return;
                 }
                 //---
-                DaoImpl dao = DaoImpl.getInstance();
-                dao.save(roomNumber.getText(), lessonName.getText(), lessonStartDate, lessonEndDate,
+                DaoImpl dao = DaoImpl.getInstance(); // если все горм то создается класс для работы с бд
+                dao.save(roomNumber.getText(), lessonName.getText(), lessonStartDate, lessonEndDate,    // вызывается метод для сохранения всего что ты ввел
                         teacherFirstName.getText(), teacherLastName.getText());
                 //---
                 frame.dispose();
-                new MenuController();
+                new MenuController();   // запускается меню
             }
         });
 
