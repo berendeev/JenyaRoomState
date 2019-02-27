@@ -21,13 +21,14 @@ public class FindController {
         JTextField roomId = new JTextField();
         JButton findByRoom = new JButton("find by room");
 
+        // код сработает после нажатия на кнопку
         findByRoom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!StringUtils.isEmpty(roomId.getText())) {
                     //find by room number
                     frame.dispose();
-                    findByRoom(roomId.getText());
+                    findByRoom(roomId.getText());   // запустит функцию поиска, она ниже
                 }
             }
         });
@@ -35,21 +36,21 @@ public class FindController {
         //by ??
 
         //draw
-        findView = new FindView();
-        findView.drawMainWindow(frame, roomIdLabel, roomId, findByRoom);
+        findView = new FindView();  // тут создается вью
+        findView.drawMainWindow(frame, roomIdLabel, roomId, findByRoom);    // отрисовка 
 
         //settings
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
-    private void findByRoom(String roomNumber) {
+    private void findByRoom(String roomNumber) {    // функция поиска
         frame = new JFrame("Find by room");
 
-        DaoImpl dao = DaoImpl.getInstance();
-        Room room = dao.getRoomByNumber(roomNumber);
+        DaoImpl dao = DaoImpl.getInstance();    // для операций с бд
+        Room room = dao.getRoomByNumber(roomNumber);    // вытаскивает аудитории из бд с данным номером
 
-        findView.findByRoom(frame, room);
+        findView.findByRoom(frame, room);   // отрисовка результата
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
