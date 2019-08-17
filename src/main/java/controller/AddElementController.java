@@ -23,17 +23,18 @@ public class AddElementController {
 
         if (lessonStartDate == null || lessonEndDate == null || !lessonStartDate.after(lessonEndDate)) {
             throw new IllegalArgumentException();
-        } else {
-            if (StringUtils.isEmpty(roomNumber)
-                    || StringUtils.isEmpty(lessonName)
-                    || StringUtils.isEmpty(teacherFirstName)
-                    || StringUtils.isEmpty(teacherLastName)) {
-                return;
-            }
-            //---
-            dao.save(roomNumber, lessonName, lessonStartDate, lessonEndDate,
-                    teacherFirstName, teacherLastName);
-            //---
         }
+
+        if (StringUtils.isEmpty(roomNumber)
+                || StringUtils.isEmpty(lessonName)
+                || StringUtils.isEmpty(teacherFirstName)
+                || StringUtils.isEmpty(teacherLastName)) {
+            throw new RuntimeException("Some of arguments no have values");
+        }
+        //---
+        dao.save(roomNumber, lessonName, lessonStartDate, lessonEndDate,
+                teacherFirstName, teacherLastName);
+        //---
     }
 }
+

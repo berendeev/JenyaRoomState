@@ -5,6 +5,8 @@ import daoimpl.DaoImpl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddElementView {
@@ -43,8 +45,17 @@ public class AddElementView {
 
         submit = new JButton("submit");
         submit.addActionListener(e -> {
-            Date lessonStartDate = (Date) lessonStart.getModel().getValue();
-            Date lessonEndDate = (Date) lessonEnd.getModel().getValue();
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            Date lessonStartDate = null;
+            Date lessonEndDate = null;
+
+            try {
+                lessonStartDate = sdf.parse(sdf.format(date));
+                lessonEndDate = sdf.parse(sdf.format(date));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
 
             try {
                 addElementController.addNewElement(
@@ -64,6 +75,8 @@ public class AddElementView {
                 error.pack();
                 error.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 error.setVisible(true);
+            } catch (RuntimeException exc) {
+                JOptionPane.showMessageDialog(null, exc.getMessage());
             }
         });
 
