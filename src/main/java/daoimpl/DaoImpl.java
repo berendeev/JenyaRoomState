@@ -11,10 +11,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import utils.MyBatisUtils;
 
 import java.util.Date;
+import java.util.List;
 
+//класс работы с бд
 public class DaoImpl implements Dao {
-    private static Dao ourInstance = new DaoImpl();
-    private SqlSessionFactory sqlSessionFactory;
+    private static Dao ourInstance = new DaoImpl(); //это для синглтона
+    private SqlSessionFactory sqlSessionFactory; // сессия для транзакций
 
     private DaoImpl() {
         sqlSessionFactory = MyBatisUtils.getSqlSessionFactory();
@@ -66,9 +68,14 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public Room getRoomByNumber(String roomNumber) {
+     public Room getRoomByNumber(String roomNumber) {
         try (SqlSession sqlSession = getSession()) {
-            return sqlSession.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);
+            Room room = sqlSession.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);
+
+            List<Lesson> lessons = sqlSession.getMapper(LessonMapper.class).getLessonByRoomId(room.getId());
+            room.setLessons(lessons);
+
+            return room;
         } catch (RuntimeException exc) {
             exc.printStackTrace();
             throw exc;

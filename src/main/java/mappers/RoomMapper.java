@@ -14,11 +14,12 @@ import java.util.List;
 public interface RoomMapper {
 
     @Select("SELECT * FROM room WHERE number = #{number}")
-    @Results({
+/*  @Results({
             @Result(column = "id", property = "id"),
             @Result(property = "lessons", column = "id", javaType = List.class,
                     many = @Many(select = "mappers.LessonMapper.getLessonByRoomId", fetchType = FetchType.LAZY))
     })
+*/
     Room getRoomByNumber(String number);
 
     @Insert("INSERT INTO room (number) VALUES (#{number})")
