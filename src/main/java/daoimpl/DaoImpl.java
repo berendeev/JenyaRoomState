@@ -11,17 +11,16 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import utils.MyBatisUtils;
 
 import java.util.Date;
-import java.util.List;
 
-public class DaoImpl {
-    private static DaoImpl ourInstance = new DaoImpl();
+public class DaoImpl implements Dao {
+    private static Dao ourInstance = new DaoImpl();
     private SqlSessionFactory sqlSessionFactory;
 
     private DaoImpl() {
         sqlSessionFactory = MyBatisUtils.getSqlSessionFactory();
     }
 
-    public static DaoImpl getInstance() {
+    public static Dao getInstance() {
         return ourInstance;
     }
 
@@ -29,7 +28,15 @@ public class DaoImpl {
         return sqlSessionFactory.openSession();
     }
 
-    public void save(String roomNumber, String lessonName, Date dateStart, Date dateEnd, String firstName, String lastName) {
+    @Override
+    public void save(
+            String roomNumber,
+            String lessonName,
+            Date dateStart,
+            Date dateEnd,
+            String firstName,
+            String lastName) {
+
         try (SqlSession session = getSession()) {
             try {
                 Room room = session.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);
@@ -58,6 +65,7 @@ public class DaoImpl {
         }
     }
 
+    @Override
     public Room getRoomByNumber(String roomNumber) {
         try (SqlSession sqlSession = getSession()) {
             return sqlSession.getMapper(RoomMapper.class).getRoomByNumber(roomNumber);

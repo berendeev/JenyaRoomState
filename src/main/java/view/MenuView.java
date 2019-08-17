@@ -1,5 +1,9 @@
 package view;
 
+import controller.AddElementController;
+import daoimpl.Dao;
+import daoimpl.DaoImpl;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,13 +12,26 @@ public class MenuView {
     private JButton addNew;
     private JButton findByRoom;
 
-    public MenuView(JFrame frame, JButton addNew, JButton findByRoom) {
-        this.frame = frame;
-        this.addNew = addNew;
-        this.findByRoom = findByRoom;
+    public MenuView() {
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        addNew = new JButton("add new");
+        addNew.addActionListener(e -> {
+            frame.dispose();
+            new AddElementView();
+        });
+
+        findByRoom = new JButton("find");
+        findByRoom.addActionListener(e -> {
+            frame.dispose();
+            new FindView();
+        });
+
+        draw();
     }
 
-    public void draw() {
+    private void draw() {
         frame.setTitle("Menu");
         frame.setBounds(100, 100, 300, 300);
         //---
